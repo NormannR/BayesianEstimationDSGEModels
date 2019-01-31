@@ -112,8 +112,6 @@ end
 smctime   = tic()
 totaltime = 0
 
-logML = 0
-
 println("SMC recursion starts...")
 
 for i in 2:Nphi
@@ -123,7 +121,6 @@ for i in 2:Nphi
 #-----------------------------------
 
     incwt = exp.((phi[i]-phi[i-1])*loglh)
-    logML += log(mean(incwt.*weightsMat[:, i-1]))
     weightsMat[:, i] = weightsMat[:, i-1].*incwt
     constMat[i]     = sum(weightsMat[:, i])
     weightsMat[:, i] /= constMat[i]
@@ -209,8 +206,6 @@ for i in 2:Nphi
         print("-----------------------------------------------\n")
         print(" Iteration = $i / $Nphi \n")
         print("-----------------------------------------------\n")
-        print(" logML = $logML \n")
-        print("-----------------------------------------------\n")
         print(" phi  = $(phi[i]) \n")
         print("-----------------------------------------------\n")
         print("  c    = $c\n")
@@ -231,3 +226,7 @@ for i in 2:Nphi
     end
 
 end
+
+print("-----------------------------------------------\n")
+println("logML = $(sum(log.(constMat)))")
+print("-----------------------------------------------\n")
